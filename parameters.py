@@ -1,7 +1,7 @@
 import numpy as np
 import torch
 
-from generating_stimuli.utils import check_if_gpu_is_available
+from utils import check_if_gpu_is_available
 
 dtype = torch.float
 device = check_if_gpu_is_available()

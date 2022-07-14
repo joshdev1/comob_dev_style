@@ -1,5 +1,5 @@
 import numpy as np
-from generating_stimuli.parameters import duration_steps, anf_per_ear, dt, envelope_power, rate_max, frequency
+from parameters import duration_steps, anf_per_ear, dt, envelope_power, rate_max, frequency
 
 
 def signal_to_spike_encoder(ipd):

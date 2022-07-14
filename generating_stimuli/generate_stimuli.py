@@ -1,7 +1,7 @@
 import numpy as np
 import torch
 
-from generating_stimuli.parameters import device, dtype
+from parameters import device, dtype
 from generating_stimuli.signal_to_spike_encoder import signal_to_spike_encoder
 
 
