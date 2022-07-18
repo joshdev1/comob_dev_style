@@ -1,5 +1,7 @@
-from generating_stimuli.generate_stimuli import random_ipd_input_signal
 from generating_stimuli.graph import graph_stimuli
+from generating_stimuli.random_ipd_input import RandomIpdInput
 
-ipd, spikes = random_ipd_input_signal(8)
+
+random_ipd_input = RandomIpdInput(8)
+ipd, spikes = random_ipd_input.generate()
 graph_stimuli(ipd, spikes)
