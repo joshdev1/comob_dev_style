@@ -17,4 +17,9 @@ def graph_stimuli(ipd, spikes):
     plt.show()
 
 
-
+def plot_loss_function_over_time(loss_hist):
+    plt.plot(loss_hist)
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
+    plt.tight_layout()
+    plt.show()

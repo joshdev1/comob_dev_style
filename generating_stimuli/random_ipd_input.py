@@ -1,7 +1,7 @@
 import numpy as np
 import torch
 
-from parameters import dtype, device, duration_steps, frequency, dt, anf_per_ear, rate_max, envelope_power
+from parameters import dtype, device, duration_steps, frequency, dt, anf_per_ear, rate_max, envelope_power, num_classes
 
 
 class RandomIpdInput:
@@ -15,7 +15,7 @@ class RandomIpdInput:
 
     def generate(self):
         self._add_phase_delay()
-        return self._convert_to_tensor(self.ipd), self._convert_to_tensor(self._generate_poisson_spike_train())
+        return self._convert_to_tensor(self.ipd), self._convert_to_tensor(self._poisson_spike_train())
 
     def _add_phase_delay(self):
         self.theta[:, :, :anf_per_ear] = self.phi[np.newaxis, :, np.newaxis] + self.phase_delays[np.newaxis, np.newaxis,
@@ -25,9 +25,18 @@ class RandomIpdInput:
                                                                                     np.newaxis,
                                                                                     np.newaxis]
 
-    def _generate_poisson_spike_train(self):
+    def _poisson_spike_train(self):
         return np.random.rand(self.num_samples, duration_steps, 2 * anf_per_ear) < rate_max * dt * (
                 0.5 * (1 + np.sin(self.theta))) ** envelope_power
 
-    def _convert_to_tensor(self, x):
-        return torch.tensor(x, device=device, dtype=dtype)
+    @staticmethod
+    def discretise(ipds):
+        return ((ipds + np.pi / 2) * num_classes / np.pi).long()
+
+    @staticmethod
+    def continuise(ipd_indices):
+        return (ipd_indices + 0.5) / num_classes * np.pi - np.pi / 2
+
+    @staticmethod
+    def _convert_to_tensor(input_array):
+        return torch.tensor(input_array, device=device, dtype=dtype)
