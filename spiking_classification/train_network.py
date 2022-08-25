@@ -8,7 +8,7 @@ from non_spiking_classification.analyse_results import analyse
 from non_spiking_classification.data_generator import data_generator
 from non_spiking_classification.weights import init_weight_matrix
 from parameters import num_samples, lr, input_size, num_hidden, num_classes, nb_epochs, batch_size, n_testing_batches
-from spiking_classification.snn import snn
+from spiking_classification.snn import run_network
 
 training_data = RandomIpdInput(num_samples)
 ipds, spikes = training_data.generate()
@@ -26,7 +26,9 @@ loss_hist = []
 for e in range(nb_epochs):
     local_loss = []
     for x_local, y_local in data_generator(training_data.discretise(ipds), spikes):
-        output = snn(x_local, W1, W2) # Run network
+        # Run network
+        output = run_network(x_local, W1, W2)
+        # Compute cross entropy loss
         m = torch.mean(output, 1)  # Mean across time dimension
         loss = loss_fn(log_softmax_fn(m), y_local)
         local_loss.append(loss.item())
@@ -41,7 +43,7 @@ for e in range(nb_epochs):
 plot_loss_function_over_time(loss_hist)
 
 print(f"Chance accuracy level: {100*1/num_classes:.1f}%")
-run_func = lambda x: snn(x, W1, W2)
+run_func = lambda x: run_network(x, W1, W2)
 analyse(ipds, spikes, 'Train', run=run_func)
 test_data = RandomIpdInput(batch_size*n_testing_batches)
 ipds_test, spikes_test = test_data.generate()
