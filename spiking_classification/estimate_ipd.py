@@ -1,5 +1,4 @@
 import torch
-from torch import nn
 
 from generating_stimuli.random_ipd_input import RandomIpdInput
 from graph import plot_loss_function_over_time
@@ -16,10 +15,8 @@ w1 = init_weight_matrix(input_size, num_hidden)
 w2 = init_weight_matrix(num_hidden, num_classes)
 
 optimizer = torch.optim.Adam([w1, w2], lr=lr)
-log_softmax_fn = nn.LogSoftmax(dim=1)
-loss_fn = nn.NLLLoss()
 
-optimised_w1, optimised_w2, loss_hist = train_network(w1, w2, training_data, ipds, spikes, loss_fn, log_softmax_fn, optimizer)
+optimised_w1, optimised_w2, loss_hist = train_network(w1, w2, training_data, ipds, spikes, optimizer)
 
 plot_loss_function_over_time(loss_hist)
 
