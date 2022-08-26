@@ -15,14 +15,14 @@ loss_fn = nn.NLLLoss()
 
 def train_network(w1, w2, training_data, ipds, spikes, optimizer):
     loss_hist = []
-    for e in range(nb_epochs):
+    for epoch in range(nb_epochs):
         local_loss = []
         for x_local, y_local in data_generator(training_data.discretise(ipds), spikes):
             output = run_network(x_local, w1, w2)
             loss = _cross_entropy(output, y_local, local_loss)
             _update_gradients(optimizer, loss)
         loss_hist.append(np.mean(local_loss))
-        _display_progress(e, local_loss)
+        _display_progress(epoch, local_loss)
     return w1, w2, loss_hist
 
 
@@ -39,5 +39,5 @@ def _update_gradients(optimizer, loss):
     optimizer.step()
 
 
-def _display_progress(e, local_loss):
-    print("Epoch %i: loss=%.5f" % (e + 1, np.mean(local_loss)))
+def _display_progress(epoch, local_loss):
+    print("Epoch %i: loss=%.5f" % (epoch + 1, np.mean(local_loss)))
