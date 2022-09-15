@@ -3,11 +3,11 @@ import torch
 from torch import nn
 
 from non_spiking_classification.data_generator import data_generator
-from parameters import num_classes, nb_epochs
+from parameters import NUM_CLASSES, EPOCHS
 from spiking_classification.snn import run_network
 
 
-print(f"Want loss for epoch 1 to be about {-np.log(1/num_classes):.2f}, multiply m by constant to get this")
+print(f"Want loss for epoch 1 to be about {-np.log(1/NUM_CLASSES):.2f}, multiply m by constant to get this")
 
 log_softmax_fn = nn.LogSoftmax(dim=1)
 loss_fn = nn.NLLLoss()
@@ -15,7 +15,7 @@ loss_fn = nn.NLLLoss()
 
 def train_network(w1, w2, training_data, ipds, spikes, optimizer):
     loss_hist = []
-    for epoch in range(nb_epochs):
+    for epoch in range(EPOCHS):
         local_loss = []
         for x_local, y_local in data_generator(training_data.discretise(ipds), spikes):
             output = run_network(x_local, w1, w2)

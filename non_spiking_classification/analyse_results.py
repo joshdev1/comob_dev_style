@@ -4,7 +4,7 @@ import torch
 
 from non_spiking_classification.data_generator import data_generator
 from generating_stimuli.random_ipd_input import RandomIpdInput
-from parameters import num_classes
+from parameters import NUM_CLASSES
 
 input_handler = RandomIpdInput(num_samples=0)
 
@@ -13,7 +13,7 @@ def analyse(ipds, spikes, label, run):
     accs = []
     ipd_true = []
     ipd_est = []
-    confusion = np.zeros((num_classes, num_classes))
+    confusion = np.zeros((NUM_CLASSES, NUM_CLASSES))
     for x_local, y_local in data_generator(ipds, spikes):
         y_local_orig = y_local
         y_local = input_handler.discretise(y_local)
@@ -35,8 +35,8 @@ def analyse(ipds, spikes, label, run):
 
     plt.figure(figsize=(10, 4), dpi=100)
     plt.subplot(121)
-    plt.hist(ipd_true*180/np.pi, bins=num_classes, label='True')
-    plt.hist(ipd_est*180/np.pi, bins=num_classes, label='Estimated')
+    plt.hist(ipd_true*180/np.pi, bins=NUM_CLASSES, label='True')
+    plt.hist(ipd_est*180/np.pi, bins=NUM_CLASSES, label='Estimated')
     plt.xlabel("IPD")
     plt.yticks([])
     plt.legend(loc='best')

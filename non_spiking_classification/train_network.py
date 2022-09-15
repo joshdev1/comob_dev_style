@@ -8,21 +8,21 @@ from non_spiking_classification.analyse_results import analyse
 from non_spiking_classification.data_generator import data_generator
 from non_spiking_classification.membrane import get_membrane_potential
 from non_spiking_classification.weights import init_weight_matrix
-from parameters import num_classes, num_samples, nb_epochs, lr, batch_size, n_testing_batches, input_size, num_hidden
+from parameters import NUM_CLASSES, NUM_SAMPLES, EPOCHS, LEARNING_RATE, BATCH_SIZE, N_TESTING_BATCHES, INPUT_SIZE, NUM_HIDDEN
 
-training_data = RandomIpdInput(num_samples)
+training_data = RandomIpdInput(NUM_SAMPLES)
 ipds, spikes = training_data.generate()
 
 
-weights = init_weight_matrix(input_size, num_hidden)
-optimizer = torch.optim.Adam([weights], lr=lr)
+weights = init_weight_matrix(INPUT_SIZE, NUM_HIDDEN)
+optimizer = torch.optim.Adam([weights], lr=LEARNING_RATE)
 log_softmax_fn = nn.LogSoftmax(dim=1)
 loss_fn = nn.NLLLoss()
 
-print(f"Want loss for epoch 1 to be about {-np.log(1/num_classes):.2f}, multiply m by constant to get this")
+print(f"Want loss for epoch 1 to be about {-np.log(1/NUM_CLASSES):.2f}, multiply m by constant to get this")
 
 loss_hist = []
-for e in range(nb_epochs):
+for e in range(EPOCHS):
     local_loss = []
     for x_local, y_local in data_generator(training_data.discretise(ipds), spikes):
         output = get_membrane_potential(x_local, weights)
@@ -39,9 +39,9 @@ for e in range(nb_epochs):
 plot_loss_function_over_time(loss_hist)
 
 # running analysis function
-print(f"Chance accuracy level: {100*1/num_classes:.1f}%")
+print(f"Chance accuracy level: {100*1/NUM_CLASSES:.1f}%")
 run_func = lambda x: get_membrane_potential(x, weights)
 analyse(ipds, spikes, 'Train', run=run_func)
-test_data = RandomIpdInput(batch_size*n_testing_batches)
+test_data = RandomIpdInput(BATCH_SIZE*N_TESTING_BATCHES)
 ipds_test, spikes_test = test_data.generate()
 analyse(ipds_test, spikes_test, 'Test', run=run_func)

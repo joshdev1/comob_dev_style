@@ -4,25 +4,25 @@ import torch
 
 def check_if_gpu_is_available():
     if torch.cuda.is_available():
-        device = torch.device("cuda")
-        return device
+        DEVICE = torch.device("cuda")
+        return DEVICE
     else:
-        device = torch.device("cpu")
-        return device
+        DEVICE = torch.device("cpu")
+        return DEVICE
 
 
-dtype = torch.float
-device = check_if_gpu_is_available()
+DTYPE = torch.float
+DEVICE = check_if_gpu_is_available()
 my_computer_is_slow = False
 
 if my_computer_is_slow:
-    batch_size = 64
+    BATCH_SIZE = 64
     n_training_batches = 64
 else:
-    batch_size = 128
+    BATCH_SIZE = 128
     n_training_batches = 128
-n_testing_batches = 32
-num_samples = batch_size * n_training_batches
+N_TESTING_BATCHES = 32
+NUM_SAMPLES = BATCH_SIZE * n_training_batches
 
 second = 1
 ms = 1e-3
@@ -30,23 +30,23 @@ Hz = 1
 
 # Simulation parameters
 dt = 1 * ms  # large time step to make simulations run faster for tutorial
-anf_per_ear = 100  # repeats of each ear with independent noise
-envelope_power = 2  # higher values make sharper envelopes, easier
-duration = .1 * second  # stimulus duration
-duration_steps = int(np.round(duration / dt))
-input_size = 2 * anf_per_ear
-num_hidden = 30
+ANF_PER_EAR = 100  # repeats of each ear with independent noise
+ENVELOPE_POWER = 2  # higher values make sharper envelopes, easier
+DURATION = .1 * second  # stimulus duration
+DURATION_STEPS = int(np.round(DURATION / dt))
+INPUT_SIZE = 2 * ANF_PER_EAR
+NUM_HIDDEN = 30
 tau = 20*ms
 beta = 5
 alpha = np.exp(-dt/tau)
-num_classes = 180//15  # num_classes = 12
+NUM_CLASSES = 180//15  # num_classes = 12
 
 # Training parameters
-nb_epochs = 10  # quick, it won't have converged
-lr = 0.01  # learning rate
+EPOCHS = 10  # quick, it won't have converged
+LEARNING_RATE = 0.01  # learning rate
 
 # Stimulus parameters
-frequency = 20 * Hz  # stimulus frequency
-rate_max = 600 * Hz  # maximum Poisson firing rate
+FREQUENCY = 20 * Hz  # stimulus frequency
+RATE_MAX = 600 * Hz  # maximum Poisson firing rate
 
 

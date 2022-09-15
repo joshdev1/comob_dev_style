@@ -1,6 +1,6 @@
 import torch
 
-from parameters import batch_size, num_classes, device, dtype, duration_steps, alpha
+from parameters import BATCH_SIZE, NUM_CLASSES, DEVICE, DTYPE, DURATION_STEPS, alpha
 
 
 def get_membrane_potential(input_spikes, weights):
@@ -10,7 +10,7 @@ def get_membrane_potential(input_spikes, weights):
 
 
 def _set_initial_membrane_voltage():
-    v = torch.zeros((batch_size, num_classes), device=device, dtype=dtype)
+    v = torch.zeros((BATCH_SIZE, NUM_CLASSES), device=DEVICE, dtype=DTYPE)
     v_rec = [v]
     return v, v_rec
 
@@ -20,7 +20,7 @@ def _get_input(input_spikes, weights):
 
 
 def _calculate_voltages(v, v_rec, h):
-    for t in range(duration_steps - 1):
+    for t in range(DURATION_STEPS - 1):
         v = alpha*v + h[:, t, :]
         v_rec.append(v)
     return torch.stack(v_rec, dim=1)  # (batch_size, duration_steps, num_classes)
